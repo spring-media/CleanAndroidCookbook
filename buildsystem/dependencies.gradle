@@ -1,0 +1,79 @@
+ext {
+    supportLibraryVersion = '23.4.0'
+    daggerVersion = '2.1'
+    rxVersion = '1.1.0'
+    retrofitVersion = '2.0.0'
+    espressoVersion = '2.2.1'
+    okHttpVersion = '3.2.0'
+    ankoVersion = '0.8.2'
+    powerMockVersion = '1.6.4'
+    parcelerVersion = '1.0.4'
+    photoViewVersion = '1.2.4'
+    dbflowVersion = '3.0.0-beta5'
+    multidexVersion = '1.0.1'
+    playServicesVersion = '8.4.0'
+    mapBoxVersion = '4.0.0'
+    photoViewVersion = '1.2.4'
+    parcelerVersion = '1.0.4'
+    orhanobutLoggerVersion = '1.12'
+    bottomBarVersion = '1.3.3'
+    stethoVersion = '1.3.1'
+    iconicsVersion = '2.5.11'
+    rxPermissionsVersion = '0.5.2'
+
+    dependencies = [
+            appCompat              : "com.android.support:appcompat-v7:$supportLibraryVersion",
+            recyclerView           : "com.android.support:recyclerview-v7:$supportLibraryVersion",
+            cardView               : "com.android.support:cardview-v7:$supportLibraryVersion",
+            supportV4              : "com.android.support:support-v4:$supportLibraryVersion",
+            supportDesign          : "com.android.support:design:$supportLibraryVersion",
+            dataBinding            : "com.android.databinding:compiler:2.0.0",
+            multidex               : "com.android.support:multidex:$multidexVersion",
+
+            playServicesBase       : "com.google.android.gms:play-services-base:$playServicesVersion",
+            playServicesAds        : "com.google.android.gms:play-services-ads:$playServicesVersion",
+            playServicesMaps       : "com.google.android.gms:play-services-maps:$playServicesVersion",
+            playServicesLocation   : "com.google.android.gms:play-services-location:$playServicesVersion",
+            googleMapsUtils        : "com.google.maps.android:android-maps-utils:0.4+",
+
+            parcel                 : "org.parceler:parceler-api:$parcelerVersion",
+            parcelCompiler         : "org.parceler:parceler:$parcelerVersion",
+
+
+            daggerCompiler         : "com.google.dagger:dagger-compiler:$daggerVersion",
+            dagger                 : "com.google.dagger:dagger:$daggerVersion",
+            javaXAnnotations       : "org.glassfish:javax.annotation:10.0-b28",
+
+            rxKotlin               : "io.reactivex:rxkotlin:0.40.1",
+            rxJava                 : "io.reactivex:rxjava:$rxVersion",
+            rxAndroid              : "io.reactivex:rxandroid:$rxVersion",
+            rxPermissions          : "com.tbruyelle.rxpermissions:rxpermissions:$rxPermissionsVersion@aar",
+
+            kotlin                 : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlinReflect          : "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version",
+
+            retrofit               : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            retrofitConverterGson  : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            retrofitAdapterRxJava  : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
+            okhttp                 : "com.squareup.okhttp3:okhttp:$okHttpVersion",
+            okhttpLogging          : "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
+            stetho                 : "com.facebook.stetho:stetho:$stethoVersion",
+            stethoOkhttp           : "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
+
+            glide                  : "com.github.bumptech.glide:glide:3.6.1",
+            iconics                : "com.mikepenz:iconics-core:$iconicsVersion@aar",
+
+            crashlytics            : "com.crashlytics.sdk.android:crashlytics:2.5.5@aar",
+            logger                 : "com.github.orhanobut:logger:$orhanobutLoggerVersion",
+
+            jUnit                  : "junit:junit:4.12",
+            powerMock              : "org.powermock:powermock-module-junit4:$powerMockVersion",
+            powerMockito           : "org.powermock:powermock-api-mockito:$powerMockVersion",
+
+            testRunner             : "com.android.support.test:runner:0.4.1",
+            espressoCore           : "com.android.support.test.espresso:espresso-core:$espressoVersion",
+            espressoContrib        : "com.android.support.test.espresso:espresso-contrib:$espressoVersion",
+            espressoIntents        : "com.android.support.test.espresso:espresso-intents:$espressoVersion",
+            multidexInstrumentation: "com.android.support:multidex-instrumentation:$multidexVersion"
+    ]
+}

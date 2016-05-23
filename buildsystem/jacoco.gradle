@@ -1,0 +1,144 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+}
+
+def getChangedClasses(flavour) {
+    def gitBranch = System.getenv().get("GIT_BRANCH")
+    if (gitBranch != null && gitBranch.equals("origin/develop")) {
+        return []
+    }
+
+    //Uncomment this when using Jenkins to make sure we fetch stuff first
+//    exec {
+//        executable = 'git'
+//        args = ['fetch']
+//    }
+
+    new ByteArrayOutputStream().withStream { os ->
+        if (System.properties.containsKey("ghprbTargetBranch")) {
+            def targetBranch = System.properties.ghprbTargetBranch
+            def sourceBranch = System.properties.ghprbSourceBranch
+            exec {
+                executable = 'git'
+                args = ['diff', '--name-only', "origin/$sourceBranch", "origin/$targetBranch"]
+                standardOutput = os
+            }
+
+        } else {
+
+            exec {
+                executable = 'git'
+                args = ['diff', '--name-only', "develop"]
+                standardOutput = os
+            }
+        }
+
+        def changes = os.toString().split(/\n/)
+                .findAll { it.startsWith("$flavour") }
+                .findAll { it.endsWith(".kt") }
+                .collect { it.replace(it.replaceFirst(/pro\/averin\/anton\/clean\/android\/cookbook.*/, ""), "") }
+                .collect { it.replace(".kt", "*.class") }
+
+        changes = changes.size() == 0 ? ['nothing'] : changes
+
+        println "Getting Changed classes for $flavour = $changes"
+
+        return changes
+    }
+}
+
+project.afterEvaluate {
+
+    // Grab all build types and product flavors
+    def buildTypes = android.buildTypes.collect { type -> type.name }
+    def productFlavors = android.productFlavors.collect { flavor -> flavor.name }
+
+
+    def defaultExcludes = ['**/R.class',
+                           '**/R$*.class',
+                           '**/*$ViewInjector*.*',
+                           '**/*$ViewBinder*.*',
+                           '**/BuildConfig.*',
+                           '**/*Parcelable*.class',
+                           '**/Parceler*.class',
+                           '**/Manifest*.*',
+                           '**/*_MembersInjector*.*',
+                           '**/*_Factory*.*',
+                           '**/*$inlined$*.class',
+                           '**/pro/averin/anton/clean/android/cookbook/databinding*/**',
+                           '**/pro/averin/anton/clean/android/cookbook/di*/**',
+                           //add your custom classes you would like to exclude from coverage
+                           '**/android/databinding*/**',
+                           '**/com/android/databinding*/**',
+                           '**/pro/averin/anton/clean/android/cookbook/BaseContext.*']
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+            def sourceName, sourcePath
+            if (!productFlavorName) {
+                sourceName = sourcePath = "${buildTypeName}"
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
+            }
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+
+            // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
+            task "${testTaskName}Coverage"(type: JacocoReport, dependsOn: "$testTaskName") {
+
+                group = "Reporting"
+                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+
+                classDirectories = fileTree(
+                        dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
+                        excludes: defaultExcludes
+                )
+
+
+                def coverageSourceDirs = [
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
+                ]
+                additionalSourceDirs = files(coverageSourceDirs)
+                sourceDirectories = files(coverageSourceDirs)
+                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                }
+            }
+
+            task "${testTaskName}CoverageDiff"(type: JacocoReport, dependsOn: "$testTaskName") {
+                group = "Reporting Diff"
+                description = "Generate Jacoco diff coverage reports on the ${sourceName.capitalize()} build."
+
+                classDirectories = fileTree(
+                        dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
+                        includes: getChangedClasses(project.name),
+                        excludes: defaultExcludes
+                )
+
+                def coverageSourceDirs = [
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
+                ]
+                additionalSourceDirs = files(coverageSourceDirs)
+                sourceDirectories = files(coverageSourceDirs)
+                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+
+                reports {
+                    xml.enabled = false
+                    html.enabled = true
+                }
+            }
+        }
+    }
+
+}

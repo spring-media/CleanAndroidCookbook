@@ -1,26 +1,178 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
+
+def globalConf = rootProject.ext
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion globalConf.androidTargetSdkVersion
+    buildToolsVersion globalConf.androidBuildToolsVersion
 
     defaultConfig {
-        applicationId "pro.averin.anton.clean.android.cookbook"
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion globalConf.androidMinSdkVersion
+        targetSdkVersion globalConf.androidTargetSdkVersion
+        versionCode VersionCodeReader.getVersionCode()
+        versionName globalConf.versionName
+
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    productFlavors {
+        stage {
+            applicationId globalConf.androidApplicationIdStage
+        }
+        production {
+            applicationId globalConf.androidApplicationIdProduction
+        }
+    }
+
+
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            testCoverageEnabled true
+            debuggable true
+            minifyEnabled false
+            ext.enableCrashlytics = false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debuggable.initWith(buildTypes.debug)
+        debuggable {
+            testCoverageEnabled = false
+        }
+    }
+
+    sourceSets {
+        debuggable {
+            res.srcDirs = ['src/debug/res']
+            java.srcDirs = ['src/debug/java']
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    applicationVariants.all { variant ->
+
+        def filename = "CleanAndroidCookbook-${variant.baseName}-${globalConf.versionName}.apk"
+
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    filename)
+        }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    Map<String, String> dependencies = globalConf.dependencies;
+
+    compile dependencies.kotlin
+    compile dependencies.kotlinReflect
+
+    compile dependencies.multidex
+
+    compile dependencies.appCompat
+    compile dependencies.recyclerView
+    compile dependencies.cardView
+    compile dependencies.supportV4
+    compile dependencies.supportDesign
+
+    compile dependencies.playServicesBase
+    compile dependencies.playServicesAds
+    compile dependencies.playServicesMaps
+    compile dependencies.playServicesLocation
+    compile dependencies.googleMapsUtils
+
+    kapt dependencies.dataBinding
+
+    compile dependencies.rxKotlin
+    compile dependencies.rxJava
+    compile dependencies.rxAndroid
+    compile dependencies.rxPermissions
+
+    compile dependencies.retrofit
+    compile dependencies.retrofitConverterGson
+    compile dependencies.retrofitAdapterRxJava
+    compile dependencies.okhttp
+    compile dependencies.okhttpLogging
+
+    debugCompile dependencies.stetho
+    debugCompile dependencies.stethoOkhttp
+    debuggableCompile dependencies.stetho
+    debuggableCompile dependencies.stethoOkhttp
+
+    compile dependencies.iconics
+    compile 'com.mikepenz:community-material-typeface:+@aar'
+
+    compile dependencies.parcel
+    kapt dependencies.parcelCompiler
+
+    kapt dependencies.daggerCompiler
+    compile dependencies.dagger
+    provided dependencies.javaXAnnotations
+
+    compile(dependencies.crashlytics) {
+        transitive = true;
+    }
+    compile dependencies.logger
+
+    testCompile dependencies.jUnit
+    testCompile dependencies.powerMock
+    testCompile dependencies.powerMockito
+
+    androidTestCompile(dependencies.testRunner) {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile(dependencies.espressoCore) {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile(dependencies.espressoContrib) {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile(dependencies.espressoIntents) {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile(dependencies.multidexInstrumentation) {
+        exclude group: 'com.android.support', module: 'multidex'
+    }
+}
+
+class VersionCodeReader {
+    static def getVersionCode() {
+        def defaultVersion = 1
+        def code = System.env.BUILD_NUMBER != null ? Integer.parseInt(System.env.BUILD_NUMBER) : defaultVersion
+        println code == defaultVersion ? "BUILD_NUMBER not found. Falling back to default version code: $defaultVersion" : "VersionCode is set to $code"
+        return code
+    }
 }
