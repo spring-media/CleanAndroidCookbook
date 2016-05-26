@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
+apply from: '../buildsystem/jacoco.gradle'
+
 def globalConf = rootProject.ext
 
 android {
