@@ -72,7 +72,12 @@ project.afterEvaluate {
                            //add your custom classes you would like to exclude from coverage
                            '**/android/databinding*/**',
                            '**/com/android/databinding*/**',
-                           '**/pro/averin/anton/clean/android/cookbook/BaseContext.*']
+                           '**/*Activity.*',
+                           '**/*Fragment.*',
+                           '**/*Adapter.*',
+                           '**/*ViewHolder.*',
+                           '**/pro/averin/anton/clean/android/cookbook/BaseContext.*',
+                           '**/pro/averin/anton/clean/android/cookbook/ui/main/view/DrawerToggleFactory.*']
     // When no product flavors defined, use empty
     if (!productFlavors) productFlavors.add('')
 
