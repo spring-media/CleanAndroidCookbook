@@ -1,54 +1,39 @@
 package pro.averin.anton.clean.android.cookbook.ui.common.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
-import com.mikepenz.iconics.context.IconicsContextWrapper
-import pro.averin.anton.clean.android.cookbook.BaseContext
+import android.support.v4.app.Fragment
 import pro.averin.anton.clean.android.cookbook.di.ActivityComponent
-import pro.averin.anton.clean.android.cookbook.di.ActivityModule
-import pro.averin.anton.clean.android.cookbook.di.DaggerActivityComponent
 import pro.averin.anton.clean.android.cookbook.ui.common.ExtraLifecycleDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.MainLifecycleDelegate
 import java.util.*
 
+abstract class BaseFragment : Fragment() {
 
-abstract class BaseActivity : AppCompatActivity() {
     private var mainLifecycleDelegates: List<MainLifecycleDelegate> = LinkedList()
     private var extraLifecycleDelegates: List<ExtraLifecycleDelegate> = LinkedList()
 
-    protected open fun setMainLifecycleDelegates(mainDelegates: List<MainLifecycleDelegate>) {
+    protected lateinit var baseActivity: BaseActivity
+
+    fun setMainLifecycleDelegates(mainDelegates: List<MainLifecycleDelegate>) {
         mainLifecycleDelegates = mainDelegates
     }
 
-    protected open fun setExtraLifecycleDelegates(extraDelegates: List<ExtraLifecycleDelegate>) {
+    fun setExtraLifecycleDelegates(extraDelegates: List<ExtraLifecycleDelegate>) {
         extraLifecycleDelegates = extraDelegates
     }
 
-    lateinit var activityComponent: ActivityComponent
-
     abstract fun doInjections(activityComponent: ActivityComponent)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val baseContext = applicationContext as BaseContext
-        activityComponent = DaggerActivityComponent.builder()
-                .appComponent(baseContext.appComponent)
-                .activityModule(ActivityModule(this))
-                .build();
-
-        doInjections(activityComponent)
-
-        mainLifecycleDelegates.forEach {
-            it.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val baseActivity = activity as? BaseActivity
+        if (baseActivity != null) {
+            this.baseActivity = baseActivity
+            doInjections(baseActivity.activityComponent)
         }
-    }
 
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(IconicsContextWrapper.wrap(newBase))
+        mainLifecycleDelegates.forEach { it.onCreate(savedInstanceState) }
     }
 
     override fun onStart() {
@@ -71,6 +56,11 @@ abstract class BaseActivity : AppCompatActivity() {
         mainLifecycleDelegates.forEach { it.onSaveInstanceState(outState) }
     }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mainLifecycleDelegates.forEach { it.onLowMemory() }
+    }
+
     override fun onStop() {
         super.onStop()
         mainLifecycleDelegates.forEach { it.onStop() }
@@ -81,22 +71,11 @@ abstract class BaseActivity : AppCompatActivity() {
         mainLifecycleDelegates.forEach { it.onDestroy() }
     }
 
-
-    override fun onBackPressed() {
+    fun onBackPressed(): Boolean {
         extraLifecycleDelegates.forEach {
-            if (it.onBackPressed()) {
-                return
-            }
+            return it.onBackPressed()
         }
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        extraLifecycleDelegates.forEach {
-            if (it.onKeyUp(keyCode, event)) {
-                return true
-            }
-        }
-        return super.onKeyUp(keyCode, event)
+        return false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -106,18 +85,10 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        extraLifecycleDelegates.forEach {
-            it.onNewIntent(intent)
-        }
-        super.onNewIntent(intent)
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         extraLifecycleDelegates.forEach {
             it.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
 }
