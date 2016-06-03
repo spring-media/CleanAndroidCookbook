@@ -1,10 +1,12 @@
 package pro.averin.anton.clean.android.cookbook.data.flickr
 
+import pro.averin.anton.clean.android.cookbook.data.flickr.model.FlickrResponse
 import pro.averin.anton.clean.android.cookbook.data.flickr.model.Media
 import pro.averin.anton.clean.android.cookbook.data.flickr.model.Method
 import pro.averin.anton.clean.android.cookbook.data.flickr.model.Sort
 import retrofit2.http.GET
 import retrofit2.http.Query
+import rx.Observable
 
 
 interface FlickrAPIService {
@@ -21,6 +23,6 @@ interface FlickrAPIService {
             @Query("media") contentType: String = Media.PHOTOS,
             @Query("has_geo") hasGeo: Boolean = true,
             @Query("geo_context") geoContext: Int = 2
-    )
+    ): Observable<FlickrResponse>
 
 }

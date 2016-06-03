@@ -23,6 +23,7 @@ class WebServicesModule {
             val url = it.request()
                     .url().newBuilder()
                     .addQueryParameter(WebServicesConfig.FLICKR_API_KEY_PARAM, BuildConfig.FLICKR_API_KEY)
+                    .addQueryParameter(WebServicesConfig.FLICKR_FORMAT_KEY_PARAM, "json")
                     .build()
 
             val request = it.request().newBuilder()
