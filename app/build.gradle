@@ -13,7 +13,7 @@ android {
     defaultConfig {
         minSdkVersion globalConf.androidMinSdkVersion
         targetSdkVersion globalConf.androidTargetSdkVersion
-        versionCode VersionCodeReader.getVersionCode()
+        versionCode VersionCodeReader.getVersionCode(globalConf.versionCode)
         versionName globalConf.versionName
 
         multiDexEnabled true
@@ -39,7 +39,7 @@ android {
             testCoverageEnabled true
             debuggable true
             minifyEnabled false
-            ext.enableCrashlytics = false
+            ext.enableCrashlytics = falseØ
         }
         release {
             minifyEnabled false
@@ -171,8 +171,7 @@ dependencies {
 }
 
 class VersionCodeReader {
-    static def getVersionCode() {
-        def defaultVersion = 1
+    static def getVersionCode(defaultVersion) {
         def code = System.env.BUILD_NUMBER != null ? Integer.parseInt(System.env.BUILD_NUMBER) : defaultVersion
         println code == defaultVersion ? "BUILD_NUMBER not found. Falling back to default version code: $defaultVersion" : "VersionCode is set to $code"
         return code

@@ -2,6 +2,7 @@ apply from: 'buildsystem/dependencies.gradle'
 
 ext {
     versionName = "1.0"
+    versionCode = 1
 
     androidBuildToolsVersion = "23.0.2"
     androidMinSdkVersion = 16
