@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import pro.averin.anton.clean.android.cookbook.databinding.FragmentGmapsBinding
 import pro.averin.anton.clean.android.cookbook.di.ActivityComponent
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseFragment
+import javax.inject.Inject
 
 
 class GoogleMapsFragment : BaseFragment(), GoogleMapsScreenContract {
+
+    @Inject lateinit var googleMapViewExtension: GoogleMapViewExtension
 
     companion object Builder {
         @JvmStatic fun create(): GoogleMapsFragment {
@@ -22,6 +25,10 @@ class GoogleMapsFragment : BaseFragment(), GoogleMapsScreenContract {
 
     override fun doInjections(activityComponent: ActivityComponent) {
         activityComponent.injectTo(this)
+
+        setMainLifecycleDelegates(listOf(googleMapViewExtension))
+
+        googleMapViewExtension.setViews(binding.map)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
