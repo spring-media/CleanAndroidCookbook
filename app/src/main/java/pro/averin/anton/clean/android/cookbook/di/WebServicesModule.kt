@@ -3,7 +3,7 @@ package pro.averin.anton.clean.android.cookbook.di
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import pro.averin.anton.clean.android.cookbook.BuildConfig
+import okhttp3.logging.HttpLoggingInterceptor
 import pro.averin.anton.clean.android.cookbook.data.WebServicesConfig
 import pro.averin.anton.clean.android.cookbook.data.flickr.FlickrAPIService
 import retrofit2.Retrofit
@@ -31,6 +31,12 @@ class WebServicesModule {
                     .build()
 
             it.proceed(request)
+        }
+
+        if (BuildConfig.DEBUG) {
+            val logger = HttpLoggingInterceptor()
+            logger.level = HttpLoggingInterceptor.Level.BODY
+            clientBuilder.addNetworkInterceptor(logger)
         }
 
         return clientBuilder.build()

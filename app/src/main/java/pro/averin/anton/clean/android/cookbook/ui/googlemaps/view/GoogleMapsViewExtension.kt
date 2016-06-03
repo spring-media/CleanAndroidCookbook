@@ -1,12 +1,9 @@
 package pro.averin.anton.clean.android.cookbook.ui.googlemaps.view
 
-import android.Manifest
 import android.os.Bundle
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.tbruyelle.rxpermissions.RxPermissions
+import pro.averin.anton.clean.android.cookbook.data.flickr.model.Photo
 import pro.averin.anton.clean.android.cookbook.di.ActivityScope
+import pro.averin.anton.clean.android.cookbook.ui.common.map.MapUtils
 import pro.averin.anton.clean.android.cookbook.ui.common.view.EventsDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.view.EventsDelegatingViewExtension
 import javax.inject.Inject
@@ -15,13 +12,14 @@ import javax.inject.Inject
 interface GoogleMapViewExtensionDelegate : EventsDelegate {
     fun onMapReady()
 
-    fun onMyLocationButtonClicked()
+    fun refreshWithCoordinates(latitude: Double, longitude: Double)
 }
 
 @ActivityScope
 class GoogleMapViewExtension @Inject constructor(
-        private val rxPermissions: RxPermissions
+        private val mapUtils: MapUtils
 ) : EventsDelegatingViewExtension<GoogleMapViewExtensionDelegate>, GoogleMapViewExtensionContract, OnMapReadyCallback {
+
     override var eventsDelegate: GoogleMapViewExtensionDelegate? = null
 
     private lateinit var map: MapView
@@ -44,22 +42,26 @@ class GoogleMapViewExtension @Inject constructor(
         this.googleMap = googleMap
 
         googleMap?.let { map ->
-            setupMapLocationButton()
+            map.setOnMapLongClickListener {
+                eventsDelegate?.refreshWithCoordinates(it.latitude, it.longitude)
+            }
+
             eventsDelegate?.onMapReady()
         }
     }
 
-    fun setupMapLocationButton() {
+    override fun addPhotoMarkers(photos: List<Photo>) {
         googleMap?.let { map ->
-            if (rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                map.isMyLocationEnabled = true
-                map.setOnMyLocationButtonClickListener {
-                    eventsDelegate?.onMyLocationButtonClicked()
-                    true
-                }
+            photos.forEach {
+                map.addMarker(mapUtils.buildMarkerOptions(it))
             }
         }
+    }
 
+    override fun navigateTo(latitude: Double, longitude: Double) {
+        googleMap?.let {
+            it.animateCamera(mapUtils.buildCameraUpdate(latitude, longitude))
+        }
     }
 
     override fun onPause() {

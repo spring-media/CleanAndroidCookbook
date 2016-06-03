@@ -2,10 +2,11 @@ package pro.averin.anton.clean.android.cookbook.di
 
 import android.content.res.Resources
 import com.google.gson.Gson
-import com.tbruyelle.rxpermissions.RxPermissions
 import dagger.Module
 import dagger.Provides
 import pro.averin.anton.clean.android.cookbook.BaseContext
+import pro.averin.anton.clean.android.cookbook.data.common.rx.RxSchedulers
+import pro.averin.anton.clean.android.cookbook.data.common.rx.Schedulers
 import javax.inject.Singleton
 
 @Module
@@ -21,6 +22,12 @@ class AppModule(private val baseContext: BaseContext) {
     @Singleton
     fun resources(): Resources {
         return baseContext.resources
+    }
+
+    @Provides
+    @Singleton
+    fun getSchedulers(): Schedulers {
+        return RxSchedulers()
     }
 
     @Provides
