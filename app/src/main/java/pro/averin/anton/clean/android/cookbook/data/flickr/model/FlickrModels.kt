@@ -31,8 +31,8 @@ data class FlickrResponse(
         val longitude: Double = 0.0,
         var accuracy: Int = 0,
         var context: Int = 0,
-        var media: String,
-        var media_status: String
+        var media: String = "",
+        var media_status: String = ""
 )
 
 @Parcel(Parcel.Serialization.BEAN) data class PhotoDescription(

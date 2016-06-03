@@ -26,13 +26,13 @@ android {
     productFlavors {
         stage {
             applicationId globalConf.androidApplicationIdStage
-            buildConfigField "String", "FLICKR_API_KEY", "${globalConf.flickr_api_key}"
-            buildConfigField "String", "FLICKR_API_SECRET", "${globalConf.flickr_api_secret}"
+            buildConfigField "String", "FLICKR_API_KEY", "\"${globalConf.flickr_api_key}\""
+            buildConfigField "String", "FLICKR_API_SECRET", "\"${globalConf.flickr_api_secret}\""
         }
         production {
             applicationId globalConf.androidApplicationIdProduction
-            buildConfigField "String", "FLICKR_API_KEY", "${globalConf.flickr_api_key}"
-            buildConfigField "String", "FLICKR_API_SECRET", "${globalConf.flickr_api_secret}"
+            buildConfigField "String", "FLICKR_API_KEY", "\"${globalConf.flickr_api_key}\""
+            buildConfigField "String", "FLICKR_API_SECRET", "\"${globalConf.flickr_api_secret}\""
         }
     }
 
