@@ -39,7 +39,7 @@ android {
             testCoverageEnabled true
             debuggable true
             minifyEnabled false
-            ext.enableCrashlytics = falseØ
+            ext.enableCrashlytics = false
         }
         release {
             minifyEnabled false
