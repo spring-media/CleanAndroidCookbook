@@ -2,6 +2,8 @@ package pro.averin.anton.clean.android.cookbook.data.flickr.model
 
 import org.parceler.Parcel
 
+data class FlickrPhotoFeed(var photos: FlickrResponse, var state: String = "")
+
 data class FlickrResponse(
         var page: Int = 0,
         var pages: Int = 0,
@@ -17,9 +19,9 @@ data class FlickrResponse(
         var server: String = "",
         var farm: Int = 0,
         var title: String = "",
-        var ispublic: Boolean = false,
-        var isfriend: Boolean = false,
-        var isfamily: Boolean = false,
+        var ispublic: Int = 0,
+        var isfriend: Int = 0,
+        var isfamily: Int = 0,
         var descrption: PhotoDescription = PhotoDescription(),
         var dateupload: Long = 0,
         var datetaken: String = "",
@@ -54,5 +56,11 @@ class Sort {
 class Media {
     companion object {
         const val PHOTOS = "photos"
+    }
+}
+
+class GeoContext {
+    companion object {
+        const val UNDEFINED = 0
     }
 }

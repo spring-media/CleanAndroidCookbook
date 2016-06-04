@@ -1,6 +1,9 @@
 package pro.averin.anton.clean.android.cookbook.ui.googlemaps.view
 
 import android.os.Bundle
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import pro.averin.anton.clean.android.cookbook.data.flickr.model.Photo
 import pro.averin.anton.clean.android.cookbook.di.ActivityScope
 import pro.averin.anton.clean.android.cookbook.ui.common.map.MapUtils

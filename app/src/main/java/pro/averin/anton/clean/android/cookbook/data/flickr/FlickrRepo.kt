@@ -13,7 +13,7 @@ class FlickrRepo @Inject constructor(
     fun searchPhotos(lat: Double, lon: Double, radius: Int): Observable<List<Photo>> {
         return flickrApi.searchPhotos(lat, lon, radius)
                 .map {
-                    it.photo
+                    it.photos.photo
                 }
     }
 

@@ -33,6 +33,8 @@ class GoogleMapsPresenter @Inject constructor(
                 .subscribe({
                                googleMapViewExtension.addPhotoMarkers(it)
                            }, {
+                               it.printStackTrace()
+                           }, {
                                googleMapViewExtension.navigateTo(latitude, longitude)
                            })
     }

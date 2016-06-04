@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import pro.averin.anton.clean.android.cookbook.BuildConfig
 import pro.averin.anton.clean.android.cookbook.data.WebServicesConfig
 import pro.averin.anton.clean.android.cookbook.data.flickr.FlickrAPIService
 import retrofit2.Retrofit
@@ -24,6 +25,7 @@ class WebServicesModule {
                     .url().newBuilder()
                     .addQueryParameter(WebServicesConfig.FLICKR_API_KEY_PARAM, BuildConfig.FLICKR_API_KEY)
                     .addQueryParameter(WebServicesConfig.FLICKR_FORMAT_KEY_PARAM, "json")
+                    .addQueryParameter(WebServicesConfig.FLICKR_NO_CALLBACK_PARAM, "1")
                     .build()
 
             val request = it.request().newBuilder()

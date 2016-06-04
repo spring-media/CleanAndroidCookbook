@@ -1,5 +1,6 @@
 package pro.averin.anton.clean.android.cookbook.di
 
+import com.tbruyelle.rxpermissions.RxPermissions
 import dagger.Component
 import pro.averin.anton.clean.android.cookbook.BaseContext
 import pro.averin.anton.clean.android.cookbook.data.common.rx.Schedulers
