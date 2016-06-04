@@ -15,7 +15,10 @@ import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseFragment
 import pro.averin.anton.clean.android.cookbook.ui.googlemaps.view.GoogleMapsFragment
 
 @RunWith(PowerMockRunner::class)
-@PrepareForTest()
+@PrepareForTest(
+        FragmentBackStackChangeListener::class,
+        BaseFragment::class
+)
 class UINavigatorTest {
 
     @Mock private lateinit var fragmentManager: FragmentManager
