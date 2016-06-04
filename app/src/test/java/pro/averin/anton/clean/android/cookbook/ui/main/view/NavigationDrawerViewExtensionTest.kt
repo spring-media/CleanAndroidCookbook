@@ -15,7 +15,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import pro.averin.anton.clean.android.cookbook.R
 import pro.averin.anton.clean.android.cookbook.kotlin.test.*
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseActivity
 import pro.averin.anton.clean.android.cookbook.ui.main.presenter.MainPresenter
@@ -94,28 +93,6 @@ class NavigationDrawerViewExtensionTest {
 
         // then
         verify(navigationView).setNavigationItemSelectedListener(any())
-    }
-
-    @Test
-    fun googleMapsScreenCanBeOpened() {
-        classToTest.setViews(drawer, navigationView)
-
-        // when
-        clickNavgationItem(R.id.nav1)
-
-        // then
-        verify(eventsDelegate).showNav1Screen()
-    }
-
-    @Test
-    fun favoritesScreenCanBeOpened() {
-        classToTest.setViews(drawer, navigationView)
-
-        // when
-        clickNavgationItem(R.id.nav2)
-
-        // then
-        verify(eventsDelegate).showNav2Screen()
     }
 
 

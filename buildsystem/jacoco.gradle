@@ -76,6 +76,7 @@ project.afterEvaluate {
                            '**/*Fragment.*',
                            '**/*Adapter.*',
                            '**/*ViewHolder.*',
+                           '**/pro/averin/anton/clean/android/cookbook/**/*Companion.*',
                            '**/pro/averin/anton/clean/android/cookbook/BaseContext.*',
                            '**/pro/averin/anton/clean/android/cookbook/ui/main/view/DrawerToggleFactory.*',
                            '**/pro/averin/anton/clean/android/cookbook/data/common/rx/RxSchedulers.*',

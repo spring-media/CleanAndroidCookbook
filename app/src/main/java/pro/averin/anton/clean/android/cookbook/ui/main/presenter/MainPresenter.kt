@@ -20,11 +20,4 @@ class MainPresenter @Inject constructor(
     override fun showInitialScreen() {
         uiNavigator.showGoogleMapsScreen()
     }
-
-    override fun showNav1Screen() {
-    }
-
-    override fun showNav2Screen() {
-    }
-
 }

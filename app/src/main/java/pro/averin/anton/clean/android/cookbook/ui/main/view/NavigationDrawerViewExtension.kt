@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
-import pro.averin.anton.clean.android.cookbook.R
 import pro.averin.anton.clean.android.cookbook.di.ActivityScope
 import pro.averin.anton.clean.android.cookbook.ui.common.ExtraLifecycleDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseActivity
@@ -16,8 +15,6 @@ import javax.inject.Inject
 
 interface NavigationDrawerViewExtensionDelegate : EventsDelegate {
     fun showInitialScreen()
-    fun showNav1Screen()
-    fun showNav2Screen()
 }
 
 interface NavigationDrawerViewExtensionContract
@@ -79,8 +76,8 @@ class NavigationDrawerViewExtension @Inject constructor(
     private fun onNavigationItemSelected(id: Int): Boolean {
 
         when (id) {
-            R.id.nav1 -> eventsDelegate?.showNav1Screen()
-            R.id.nav2 -> eventsDelegate?.showNav2Screen()
+//            R.id.nav1 -> eventsDelegate?.showNav1Screen()
+//            R.id.nav2 -> eventsDelegate?.showNav2Screen()
         }
 
         drawer?.closeDrawer(GravityCompat.START)
