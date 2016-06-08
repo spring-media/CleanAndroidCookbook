@@ -37,7 +37,7 @@ class GoogleMapsFragment : BaseFragment(), GoogleMapsScreenContract {
         googleMapViewExtension.eventsDelegate = presenter
 
         //manage lifecycle
-        setMainLifecycleDelegates(listOf(presenter, googleMapViewExtension))
+        setMainLifecycleDelegates(presenter, googleMapViewExtension)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

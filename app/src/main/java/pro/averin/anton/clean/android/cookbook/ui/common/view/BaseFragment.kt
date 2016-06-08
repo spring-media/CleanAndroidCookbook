@@ -6,20 +6,19 @@ import android.support.v4.app.Fragment
 import pro.averin.anton.clean.android.cookbook.di.ActivityComponent
 import pro.averin.anton.clean.android.cookbook.ui.common.ExtraLifecycleDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.MainLifecycleDelegate
-import java.util.*
 
 abstract class BaseFragment : Fragment() {
 
-    private var mainLifecycleDelegates: List<MainLifecycleDelegate> = LinkedList()
-    private var extraLifecycleDelegates: List<ExtraLifecycleDelegate> = LinkedList()
+    private var mainLifecycleDelegates: Array<out MainLifecycleDelegate> = arrayOf()
+    private var extraLifecycleDelegates: Array<out ExtraLifecycleDelegate> = arrayOf()
 
     protected lateinit var baseActivity: BaseActivity
 
-    fun setMainLifecycleDelegates(mainDelegates: List<MainLifecycleDelegate>) {
+    fun setMainLifecycleDelegates(vararg mainDelegates: MainLifecycleDelegate) {
         mainLifecycleDelegates = mainDelegates
     }
 
-    fun setExtraLifecycleDelegates(extraDelegates: List<ExtraLifecycleDelegate>) {
+    fun setExtraLifecycleDelegates(vararg extraDelegates: ExtraLifecycleDelegate) {
         extraLifecycleDelegates = extraDelegates
     }
 
