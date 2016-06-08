@@ -12,18 +12,17 @@ import pro.averin.anton.clean.android.cookbook.di.ActivityModule
 import pro.averin.anton.clean.android.cookbook.di.DaggerActivityComponent
 import pro.averin.anton.clean.android.cookbook.ui.common.ExtraLifecycleDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.MainLifecycleDelegate
-import java.util.*
 
 
 abstract class BaseActivity : AppCompatActivity() {
-    private var mainLifecycleDelegates: List<MainLifecycleDelegate> = LinkedList()
-    private var extraLifecycleDelegates: List<ExtraLifecycleDelegate> = LinkedList()
+    private var mainLifecycleDelegates: Array<out MainLifecycleDelegate> = arrayOf()
+    private var extraLifecycleDelegates: Array<out ExtraLifecycleDelegate> = arrayOf()
 
-    protected open fun setMainLifecycleDelegates(mainDelegates: List<MainLifecycleDelegate>) {
+    protected open fun setMainLifecycleDelegates(vararg mainDelegates: MainLifecycleDelegate) {
         mainLifecycleDelegates = mainDelegates
     }
 
-    protected open fun setExtraLifecycleDelegates(extraDelegates: List<ExtraLifecycleDelegate>) {
+    protected open fun setExtraLifecycleDelegates(vararg extraDelegates: ExtraLifecycleDelegate) {
         extraLifecycleDelegates = extraDelegates
     }
 

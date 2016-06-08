@@ -21,8 +21,8 @@ class MainActivity : BaseActivity(), MainScreenContract {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         activityComponent.injectTo(this)
-        setMainLifecycleDelegates(listOf(presenter, navigationDrawerViewExtension))
-        setExtraLifecycleDelegates(listOf(presenter))
+        setMainLifecycleDelegates(presenter, navigationDrawerViewExtension)
+        setExtraLifecycleDelegates(presenter)
 
         presenter.view = this
         presenter.navigationDrawerViewExtension = navigationDrawerViewExtension
