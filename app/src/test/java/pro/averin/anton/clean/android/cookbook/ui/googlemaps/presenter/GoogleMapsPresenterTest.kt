@@ -13,7 +13,9 @@ import pro.averin.anton.clean.android.cookbook.kotlin.test.any
 import pro.averin.anton.clean.android.cookbook.kotlin.test.eq
 import pro.averin.anton.clean.android.cookbook.kotlin.test.given
 import pro.averin.anton.clean.android.cookbook.kotlin.test.verify
+import pro.averin.anton.clean.android.cookbook.ui.common.resolution.Resolution
 import pro.averin.anton.clean.android.cookbook.ui.googlemaps.view.GoogleMapViewExtensionContract
+import pro.averin.anton.clean.android.cookbook.ui.googlemaps.view.GoogleMapsScreenContract
 import rx.Observable
 
 @RunWith(PowerMockRunner::class)
@@ -24,6 +26,9 @@ class GoogleMapsPresenterTest {
 
     @Mock private lateinit var flickrRepo: FlickrRepo
     @Mock private lateinit var googleMapViewExtension: GoogleMapViewExtensionContract
+
+    @Mock private lateinit var view: GoogleMapsScreenContract
+    @Mock private lateinit var resolution: Resolution
     val schedulers = MockSchedulers()
 
     val lat = 1.0
@@ -38,10 +43,13 @@ class GoogleMapsPresenterTest {
                 flickrRepo,
                 schedulers
         )
+        classToTest.view = view
         classToTest.googleMapViewExtension = googleMapViewExtension
 
+        given(view.getResolution()).willReturn(resolution)
         given(flickrRepo.searchPhotos(any(), any(), any()))
                 .willReturn(Observable.just(listPhoto))
+
     }
 
     @Test

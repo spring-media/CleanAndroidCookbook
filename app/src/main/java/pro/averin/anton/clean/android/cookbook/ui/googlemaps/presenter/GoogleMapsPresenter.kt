@@ -1,5 +1,6 @@
 package pro.averin.anton.clean.android.cookbook.ui.googlemaps.presenter
 
+import pro.averin.anton.clean.android.cookbook.data.common.resolution.ResolvedSubscriber
 import pro.averin.anton.clean.android.cookbook.data.common.rx.Schedulers
 import pro.averin.anton.clean.android.cookbook.data.flickr.FlickrRepo
 import pro.averin.anton.clean.android.cookbook.di.ActivityScope
@@ -30,12 +31,10 @@ class GoogleMapsPresenter @Inject constructor(
         flickrRepo.searchPhotos(latitude, longitude, testRadius)
                 .subscribeOn(schedulers.io)
                 .observeOn(schedulers.mainThread)
-                .subscribe({
-                               googleMapViewExtension.addPhotoMarkers(it)
-                           }, {
-                               it.printStackTrace()
-                           }, {
-                               googleMapViewExtension.navigateTo(latitude, longitude)
-                           })
+                .subscribe(ResolvedSubscriber(view?.getResolution()!!, {
+                    googleMapViewExtension.addPhotoMarkers(it)
+                }, onCompletedFunc = {
+                    googleMapViewExtension.navigateTo(latitude, longitude)
+                }))
     }
 }

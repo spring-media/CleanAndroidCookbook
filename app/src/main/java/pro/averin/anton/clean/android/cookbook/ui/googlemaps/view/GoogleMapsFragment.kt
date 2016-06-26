@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import pro.averin.anton.clean.android.cookbook.databinding.FragmentGmapsBinding
 import pro.averin.anton.clean.android.cookbook.di.ActivityComponent
+import pro.averin.anton.clean.android.cookbook.ui.common.resolution.Resolution
+import pro.averin.anton.clean.android.cookbook.ui.common.resolution.UIResolution
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseFragment
 import pro.averin.anton.clean.android.cookbook.ui.googlemaps.presenter.GoogleMapsPresenter
 import javax.inject.Inject
@@ -15,6 +17,7 @@ class GoogleMapsFragment : BaseFragment(), GoogleMapsScreenContract {
 
     @Inject lateinit var googleMapViewExtension: GoogleMapViewExtension
     @Inject lateinit var presenter: GoogleMapsPresenter
+    @Inject lateinit var uiResolution: UIResolution
 
     companion object Builder {
         @JvmStatic fun create(): GoogleMapsFragment {
@@ -43,5 +46,9 @@ class GoogleMapsFragment : BaseFragment(), GoogleMapsScreenContract {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGmapsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun getResolution(): Resolution? {
+        return uiResolution
     }
 }
