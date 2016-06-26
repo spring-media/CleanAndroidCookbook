@@ -3,4 +3,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="error_no_network_connection">Sorry, application does not yet support offline mode. Please, enable your network connection</string>
+    <string name="error_not_found">Not Found</string>
+    <string name="error_service_unavailable">Service Unavailable</string>
+    <string name="error_http_exception">Http Exception</string>
+    <string name="error_enable_gps">GPS is disabled</string>
 </resources>

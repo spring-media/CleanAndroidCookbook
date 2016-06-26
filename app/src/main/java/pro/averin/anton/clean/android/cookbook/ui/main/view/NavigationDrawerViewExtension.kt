@@ -5,6 +5,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
+import pro.averin.anton.clean.android.cookbook.R
 import pro.averin.anton.clean.android.cookbook.di.ActivityScope
 import pro.averin.anton.clean.android.cookbook.ui.common.ExtraLifecycleDelegate
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseActivity
