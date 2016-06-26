@@ -5,16 +5,19 @@ import android.support.v7.widget.Toolbar
 import pro.averin.anton.clean.android.cookbook.R
 import pro.averin.anton.clean.android.cookbook.databinding.ActivityMainBinding
 import pro.averin.anton.clean.android.cookbook.di.ActivityComponent
+import pro.averin.anton.clean.android.cookbook.ui.common.resolution.Resolution
+import pro.averin.anton.clean.android.cookbook.ui.common.resolution.UIResolution
 import pro.averin.anton.clean.android.cookbook.ui.common.view.BaseActivity
-import pro.averin.anton.clean.android.cookbook.ui.common.view.ScreenContract
+import pro.averin.anton.clean.android.cookbook.ui.common.view.ResolvedScreenContract
 import pro.averin.anton.clean.android.cookbook.ui.main.presenter.MainPresenter
 import javax.inject.Inject
 
-interface MainScreenContract : ScreenContract
+interface MainScreenContract : ResolvedScreenContract
 
 class MainActivity : BaseActivity(), MainScreenContract {
 
     @Inject lateinit var presenter: MainPresenter
+    @Inject lateinit var uiResolution: UIResolution
     @Inject lateinit var navigationDrawerViewExtension: NavigationDrawerViewExtension
 
     override fun doInjections(activityComponent: ActivityComponent) {
@@ -41,4 +44,7 @@ class MainActivity : BaseActivity(), MainScreenContract {
         }
     }
 
+    override fun getResolution(): Resolution? {
+        return uiResolution
+    }
 }
