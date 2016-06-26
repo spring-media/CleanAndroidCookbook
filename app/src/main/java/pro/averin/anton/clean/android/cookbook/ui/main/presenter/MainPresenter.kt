@@ -13,11 +13,10 @@ import javax.inject.Inject
 
 @ActivityScope
 class MainPresenter @Inject constructor(
-        private val connectionEventsHandler: ConnectionEventsHandler
+        private val connectionEventsHandler: ConnectionEventsHandler,
+        private val uiNavigator: UINavigator
 ) : BasePresenter<MainScreenContract>(), ExtraLifecycleDelegate, NavigationDrawerViewExtensionDelegate {
-
-    @Inject lateinit var uiNavigator: UINavigator
-
+    
     lateinit var navigationDrawerViewExtension: NavigationDrawerViewExtensionContract
 
     override fun onCreate(savedInstanceState: Bundle?) {
