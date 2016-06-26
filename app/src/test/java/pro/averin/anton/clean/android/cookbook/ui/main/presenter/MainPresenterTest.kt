@@ -17,7 +17,8 @@ import pro.averin.anton.clean.android.cookbook.ui.main.view.NavigationDrawerView
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(
-        UINavigator::class
+        UINavigator::class,
+        ConnectionEventsHandler::class
 )
 class MainPresenterTest {
 
